@@ -64,6 +64,7 @@ function Compare() {
     setLoading(true);
     try {
       const selectedCrypto = event.target.value;
+      // console.log('Selected Crypto:', selectedCrypto, 'isCrypto2:', isCrypto2);
       if (isCrypto2) {
         setCrypto2(selectedCrypto);
         let coinData = await getCoinData(selectedCrypto);
@@ -103,7 +104,6 @@ function Compare() {
       try {
         const price1 = await getPrices(crypto1, days, priceType);
         const price2 = await getPrices(crypto2, days, priceType);
-        console.log('Prices fetched:', price1, price2);
         settingChartData(setChartData, price1, price2);
       } catch (error) {
         console.error('Error fetching prices:', error);
@@ -122,7 +122,7 @@ function Compare() {
       ) : (
         <div>
           <div className="flex-wrap sm:flex sm:justify-start justify-center items-center m-6 gap-8">
-            <SelectCoins crypto1={crypto1} crypto2={crypto2} handleCoinChange={handleCoinChange} />
+            <SelectCoins crypto1={crypto1} crypto2={crypto2} setLoading = {setLoading} handleCoinChange={handleCoinChange} />
             <SelectDays days={days} setLoading={setLoading} handleDaysChange={handleDaysChange} isPTag={true} />
           </div>
           <div className="bg-[#1d2942] rounded-xl my-1">

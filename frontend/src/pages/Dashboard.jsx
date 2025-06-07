@@ -21,7 +21,7 @@ function Dashboard() {
         setPaginatedCoins(coins.slice(prevIndex,prevIndex+10));
     };
     let onSearchChange = (e)=>{
-        console.log(e.target.value)
+        // console.log(e.target.value)
         setSearch(e.target.value);
     }
     let filteredCoins = coins.filter((item)=>(item.name.toLowerCase().includes(search.toLowerCase()) || 

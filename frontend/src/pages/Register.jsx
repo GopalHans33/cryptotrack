@@ -63,15 +63,43 @@ function Register() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-        console.log("hello");
-      const response = await axios.post('/user/login', value == 'login' ? loginFormData : submitFormData);
-      console.log('User registered successfully:', response.data.data.user);
-      setuserData(response.data.data.user);
-      setisLogin(1);
+        const response = await axios.post('/user/login', value === 'login' ? loginFormData : submitFormData);
+        const { user, token } = response.data.data;
+
+        // Store token and user in localStorage
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+
+        setuserData(user);
+        setisLogin(1);
     } catch (error) {
-      console.error('Error registering user:', error.response.data);
+        console.error('Error logging in user:', error.response.data);
     }
-  };
+};
+
+const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setuserData({
+        name: 'N/A',
+        email: 'N/A',
+        username: 'N/A'
+    });
+    setisLogin(0);
+    setValue("login");
+};
+
+
+useEffect(() => {
+  const storedUser = localStorage.getItem("user");
+  const storedToken = localStorage.getItem("token");
+
+  if (storedUser && storedToken) {
+    setuserData(JSON.parse(storedUser));
+    setisLogin(1);
+  }
+}, []);
+
 
   const theme = createTheme({
     palette:{
@@ -225,6 +253,13 @@ function Register() {
                 <label className="ml-16">Username:</label>
                 <span className="text-violet-500 ml-16">{userData?.username || "N/A"}</span>
             </div>
+            <button
+                onClick={handleLogout}
+                className='bg-violet-400 rounded-md p-3 mx-[42%] hover:bg-violet-500 transition-colors'
+                >
+                Logout
+            </button>
+
         </form>
     </div>
 
