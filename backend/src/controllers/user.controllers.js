@@ -22,7 +22,6 @@ const generateAccessAndRefreshTokens = async(userId) => {
 
 const registerUser = asyncHandler( async (req, res) => {
     const { name, email, username, password } = req.body;
-    console.log(`name: ${name}`);
     if (
         [name, email, username, password].some((field) => {
             field?.trim() === ""
@@ -65,10 +64,6 @@ const LoginUser = asyncHandler( async (req, res) => {
     if(!username && !email){
         throw new ApiError(400, "username or email required")
     }
-    console.log(`username : ${username}`);
-    console.log(`email: ${email}`);
-    console.log(`password: ${password}`);
-    
     const user = await User.findOne({$or: [{email},{username}]})
 
     if(!user){
@@ -76,7 +71,6 @@ const LoginUser = asyncHandler( async (req, res) => {
     }
 
     const isPasswordCorrect = await user.isPasswordCorrect(password);
-    console.log(isPasswordCorrect);
     
     if(!isPasswordCorrect){
         throw new ApiError(401, "Invalid User Credentials")
