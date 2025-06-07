@@ -30,6 +30,8 @@ function Register() {
         password: ''
     });
 
+    const API_BASE = import.meta.env.PROD ? 'https://cryptotracker-api.onrender.com' : 'http://localhost:8000';
+
     const handleSubmitChange = (e) =>{
         setSubmitFormData({
             ...submitFormData,
@@ -52,7 +54,7 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/user/register', submitFormData);
+      const response = await axios.post(`${API_BASE}/user/register`, submitFormData);
       console.log('User registered successfully:', response.data);
       handleLogin(e);
     } catch (error) {
@@ -63,7 +65,7 @@ function Register() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-        const response = await axios.post('/user/login', value === 'login' ? loginFormData : submitFormData);
+        const response = await axios.post(`${API_BASE}/user/login`, value === 'login' ? loginFormData : submitFormData);
         const { user, token } = response.data.data;
 
         // Store token and user in localStorage
